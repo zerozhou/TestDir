@@ -1,0 +1,108 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BF_APPEND	lzw-0.6/bitfile.h	/^    BF_APPEND= 2,$/;"	e	enum:__anon4
+BF_BIG_ENDIAN	lzw-0.6/bitfile.c	/^    BF_BIG_ENDIAN$/;"	e	enum:__anon1	file:
+BF_LITTLE_ENDIAN	lzw-0.6/bitfile.c	/^    BF_LITTLE_ENDIAN,$/;"	e	enum:__anon1	file:
+BF_MODES	lzw-0.6/bitfile.h	/^} BF_MODES;$/;"	t	typeref:enum:__anon4
+BF_NO_MODE	lzw-0.6/bitfile.h	/^    BF_NO_MODE$/;"	e	enum:__anon4
+BF_READ	lzw-0.6/bitfile.h	/^    BF_READ = 0,$/;"	e	enum:__anon4
+BF_UNKNOWN_ENDIAN	lzw-0.6/bitfile.c	/^    BF_UNKNOWN_ENDIAN,$/;"	e	enum:__anon1	file:
+BF_WRITE	lzw-0.6/bitfile.h	/^    BF_WRITE = 1,$/;"	e	enum:__anon4
+BitFileByteAlign	lzw-0.6/bitfile.c	/^int BitFileByteAlign(bit_file_t *stream)$/;"	f
+BitFileClose	lzw-0.6/bitfile.c	/^int BitFileClose(bit_file_t *stream)$/;"	f
+BitFileFlushOutput	lzw-0.6/bitfile.c	/^int BitFileFlushOutput(bit_file_t *stream, const unsigned char onesFill)$/;"	f
+BitFileGetBit	lzw-0.6/bitfile.c	/^int BitFileGetBit(bit_file_t *stream)$/;"	f
+BitFileGetBits	lzw-0.6/bitfile.c	/^int BitFileGetBits(bit_file_t *stream, void *bits, const unsigned int count)$/;"	f
+BitFileGetBitsBE	lzw-0.6/bitfile.c	/^int BitFileGetBitsBE(bit_file_t *stream, void *bits, const unsigned int count,$/;"	f
+BitFileGetBitsInt	lzw-0.6/bitfile.c	/^int BitFileGetBitsInt(bit_file_t *stream, void *bits, const unsigned int count,$/;"	f
+BitFileGetBitsLE	lzw-0.6/bitfile.c	/^int BitFileGetBitsLE(bit_file_t *stream, void *bits, const unsigned int count)$/;"	f
+BitFileGetChar	lzw-0.6/bitfile.c	/^int BitFileGetChar(bit_file_t *stream)$/;"	f
+BitFileOpen	lzw-0.6/bitfile.c	/^bit_file_t *BitFileOpen(const char *fileName, const BF_MODES mode)$/;"	f
+BitFilePutBit	lzw-0.6/bitfile.c	/^int BitFilePutBit(const int c, bit_file_t *stream)$/;"	f
+BitFilePutBits	lzw-0.6/bitfile.c	/^int BitFilePutBits(bit_file_t *stream, void *bits, const unsigned int count)$/;"	f
+BitFilePutBitsBE	lzw-0.6/bitfile.c	/^int BitFilePutBitsBE(bit_file_t *stream, void *bits, const unsigned int count,$/;"	f
+BitFilePutBitsInt	lzw-0.6/bitfile.c	/^int BitFilePutBitsInt(bit_file_t *stream, void *bits, const unsigned int count,$/;"	f
+BitFilePutBitsLE	lzw-0.6/bitfile.c	/^int BitFilePutBitsLE(bit_file_t *stream, void *bits, const unsigned int count)$/;"	f
+BitFilePutChar	lzw-0.6/bitfile.c	/^int BitFilePutChar(const int c, bit_file_t *stream)$/;"	f
+BitFileToFILE	lzw-0.6/bitfile.c	/^FILE *BitFileToFILE(bit_file_t *stream)$/;"	f
+CC	lzw-0.6/Makefile	/^CC = gcc$/;"	m
+CFLAGS	lzw-0.6/Makefile	/^CFLAGS = -Wall -pedantic -ansi -c$/;"	m
+CODE_MS_BITS	lzw-0.6/lzwdecode.c	108;"	d	file:
+CODE_MS_BITS	lzw-0.6/lzwencode.c	113;"	d	file:
+CURRENT_MAX_CODES	lzw-0.6/lzwdecode.c	110;"	d	file:
+CURRENT_MAX_CODES	lzw-0.6/lzwencode.c	115;"	d	file:
+DEL	lzw-0.6/Makefile	/^	DEL = del$/;"	m
+DEL	lzw-0.6/Makefile	/^	DEL = rm$/;"	m
+DICT_SIZE	lzw-0.6/lzwdecode.c	95;"	d	file:
+DecodeRecursive	lzw-0.6/lzwdecode.c	/^unsigned char DecodeRecursive(unsigned int code, FILE *fpOut)$/;"	f
+DetermineEndianess	lzw-0.6/bitfile.c	/^endian_t DetermineEndianess(void)$/;"	f
+EMPTY	lzw-0.6/lzwdecode.c	86;"	d	file:
+EXE	lzw-0.6/Makefile	/^	EXE = .exe$/;"	m
+EXE	lzw-0.6/Makefile	/^	EXE =$/;"	m
+FALSE	lzw-0.6/lzw.h	57;"	d
+FIRST_CODE	lzw-0.6/lzwdecode.c	91;"	d	file:
+FIRST_CODE	lzw-0.6/lzwencode.c	98;"	d	file:
+FindDictionaryEntry	lzw-0.6/lzwencode.c	/^dict_node_t *FindDictionaryEntry(dict_node_t *root, int prefixCode,$/;"	f
+FreeOptList	lzw-0.6/optlist.c	/^void FreeOptList(option_t *list)$/;"	f
+FreeTree	lzw-0.6/lzwencode.c	/^void FreeTree(dict_node_t *node)$/;"	f
+GetCodeWord	lzw-0.6/lzwdecode.c	/^int GetCodeWord(bit_file_t *bfpIn, unsigned char codeLen)$/;"	f
+GetOptList	lzw-0.6/optlist.c	/^option_t *GetOptList(const int argc, char *const argv[], char *const options)$/;"	f
+LD	lzw-0.6/Makefile	/^LD = gcc$/;"	m
+LDFLAGS	lzw-0.6/Makefile	/^LDFLAGS = -o$/;"	m
+LIBS	lzw-0.6/Makefile	/^LIBS = -L. -llzw -loptlist$/;"	m
+LZWDecodeFile	lzw-0.6/lzwdecode.c	/^int LZWDecodeFile(char *inFile, char *outFile)$/;"	f
+LZWEncodeFile	lzw-0.6/lzwencode.c	/^int LZWEncodeFile(char *inFile, char *outFile)$/;"	f
+MAX_CODES	lzw-0.6/lzwdecode.c	93;"	d	file:
+MAX_CODES	lzw-0.6/lzwencode.c	100;"	d	file:
+MAX_CODE_LEN	lzw-0.6/lzwdecode.c	89;"	d	file:
+MAX_CODE_LEN	lzw-0.6/lzwencode.c	96;"	d	file:
+MIN_CODE_LEN	lzw-0.6/lzwdecode.c	88;"	d	file:
+MIN_CODE_LEN	lzw-0.6/lzwencode.c	95;"	d	file:
+MS_BITS_MASK	lzw-0.6/lzwdecode.c	109;"	d	file:
+MS_BITS_MASK	lzw-0.6/lzwencode.c	114;"	d	file:
+MakeBitFile	lzw-0.6/bitfile.c	/^bit_file_t *MakeBitFile(FILE *stream, const BF_MODES mode)$/;"	f
+MakeKey	lzw-0.6/lzwencode.c	/^unsigned int MakeKey(unsigned int prefixCode, unsigned char suffixChar)$/;"	f
+MakeNode	lzw-0.6/lzwencode.c	/^dict_node_t *MakeNode(unsigned int codeWord,$/;"	f
+MakeOpt	lzw-0.6/optlist.c	/^option_t *MakeOpt(const char option, char *const argument, const int index)$/;"	f
+MatchOpt	lzw-0.6/optlist.c	/^int MatchOpt(const char argument, char *const options)$/;"	f
+OL_NOINDEX	lzw-0.6/optlist.h	55;"	d
+OPTLIST_H	lzw-0.6/optlist.h	42;"	d
+OS	lzw-0.6/Makefile	/^	OS = Windows$/;"	m
+PutCodeWord	lzw-0.6/lzwencode.c	/^void PutCodeWord(bit_file_t *bfpOut, int code, unsigned char codeLen)$/;"	f
+RemovePath	lzw-0.6/sample.c	/^char *RemovePath(char *fullPath)$/;"	f
+TRUE	lzw-0.6/lzw.h	61;"	d
+_BITFILE_H_	lzw-0.6/bitfile.h	67;"	d
+_LZW_H_	lzw-0.6/lzw.h	51;"	d
+argIndex	lzw-0.6/optlist.h	/^    int argIndex;$/;"	m	struct:option_t
+argument	lzw-0.6/optlist.h	/^    char *argument;$/;"	m	struct:option_t
+bitBuffer	lzw-0.6/bitfile.c	/^    unsigned char bitBuffer;    \/* bits waiting to be read\/written *\/$/;"	m	struct:bit_file_t	file:
+bitCount	lzw-0.6/bitfile.c	/^    unsigned char bitCount;     \/* number of bits in bitBuffer *\/$/;"	m	struct:bit_file_t	file:
+bit_file_t	lzw-0.6/bitfile.c	/^struct bit_file_t$/;"	s	file:
+bit_file_t	lzw-0.6/bitfile.h	/^typedef struct bit_file_t bit_file_t;$/;"	t	typeref:struct:bit_file_t
+bytes	lzw-0.6/bitfile.c	/^    unsigned char bytes[sizeof(unsigned long)];$/;"	m	union:__anon2	file:
+codeWord	lzw-0.6/lzwencode.c	/^    unsigned int codeWord;      \/* code word for this entry *\/$/;"	m	struct:dict_node_t	file:
+decode_dictionary_t	lzw-0.6/lzwdecode.c	/^} decode_dictionary_t;$/;"	t	typeref:struct:__anon3	file:
+dict_node_t	lzw-0.6/lzwencode.c	/^typedef struct dict_node_t$/;"	s	file:
+dict_node_t	lzw-0.6/lzwencode.c	/^} dict_node_t;$/;"	t	typeref:struct:dict_node_t	file:
+dictionary	lzw-0.6/lzwdecode.c	/^decode_dictionary_t dictionary[DICT_SIZE];$/;"	v
+endian	lzw-0.6/bitfile.c	/^    endian_t endian;            \/* endianess of architecture *\/$/;"	m	struct:bit_file_t	file:
+endian_t	lzw-0.6/bitfile.c	/^} endian_t;$/;"	t	typeref:enum:__anon1	file:
+endian_test_t	lzw-0.6/bitfile.c	/^} endian_test_t;$/;"	t	typeref:union:__anon2	file:
+fp	lzw-0.6/bitfile.c	/^    FILE *fp;                   \/* file pointer used by stdio functions *\/$/;"	m	struct:bit_file_t	file:
+left	lzw-0.6/lzwencode.c	/^    struct dict_node_t *left;   \/* child with < key *\/$/;"	m	struct:dict_node_t	typeref:struct:dict_node_t::dict_node_t	file:
+main	lzw-0.6/sample.c	/^int main(int argc, char *argv[])$/;"	f
+mode	lzw-0.6/bitfile.c	/^    BF_MODES mode;              \/* open for read, write, or append *\/$/;"	m	struct:bit_file_t	file:
+next	lzw-0.6/optlist.h	/^    struct option_t *next;$/;"	m	struct:option_t	typeref:struct:option_t::option_t
+option	lzw-0.6/optlist.h	/^    char option;$/;"	m	struct:option_t
+option_t	lzw-0.6/optlist.h	/^typedef struct option_t$/;"	s
+option_t	lzw-0.6/optlist.h	/^} option_t;$/;"	t	typeref:struct:option_t
+prefixCode	lzw-0.6/lzwdecode.c	/^    unsigned int prefixCode;    \/* code for remaining chars in string *\/$/;"	m	struct:__anon3	file:
+prefixCode	lzw-0.6/lzwencode.c	/^    unsigned int prefixCode;    \/* code for remaining chars in string *\/$/;"	m	struct:dict_node_t	file:
+right	lzw-0.6/lzwencode.c	/^    struct dict_node_t *right;  \/* child with >= key *\/$/;"	m	struct:dict_node_t	typeref:struct:dict_node_t::dict_node_t	file:
+suffixChar	lzw-0.6/lzwdecode.c	/^    unsigned char suffixChar;   \/* last char in encoded string *\/$/;"	m	struct:__anon3	file:
+suffixChar	lzw-0.6/lzwencode.c	/^    unsigned char suffixChar;   \/* last char in encoded string *\/$/;"	m	struct:dict_node_t	file:
+word	lzw-0.6/bitfile.c	/^    unsigned long word;$/;"	m	union:__anon2	file:
