@@ -503,12 +503,12 @@ int BitFilePutChar(const int c, bit_file_t *stream)
         return(EOF);
     }
 
-    if (stream->bitCount == 0)
+    if (0 == stream->bitCount)
     {
-        /* we can just put byte from file */
+        /* we can just put byte to file */
         return fputc(c, stream->fp);
     }
-
+    printf("Stream->bitCount=%d--stream->bitBuffer=%d\n",stream->bitCount, stream->bitBuffer);
     /* figure out what to write */
     tmp = ((unsigned char)c) >> (stream->bitCount);
     tmp = tmp | ((stream->bitBuffer) << (8 - stream->bitCount));
@@ -923,8 +923,8 @@ int BitFileGetBitsBE(bit_file_t *stream, void *bits, const unsigned int count,
 *   Function   : BitFilePutBitsInt
 *   Description: This function provides a machine independent layer that
 *                allows a single function call to write an arbitrary number
-*                of bits from an integer type variable into a file.
-*   Parameters : stream - pointer to bit file stream to write to
+*                of bits of integer type variable into a file.
+*   Parameters : stream - pointer to bit file stream to write
 *                bits - pointer to bits to write
 *                count - number of bits to write
 *                size - sizeof type containing "bits"
@@ -982,13 +982,16 @@ int BitFilePutBitsLE(bit_file_t *stream, void *bits, const unsigned int count)
     unsigned char *bytes, tmp;
     int offset, remaining, returnValue;
 
-    bytes = (unsigned char *)bits;
+    /*bits 是指向codeWord的指针，这里为方便位操作，将codeWord占用的位数打包成一个字节（用char表示一个byte）*/
+    bytes = (unsigned char *)bits;   
+    
     offset = 0;
-    remaining = count;
+    remaining = count;      /*count == currentCodeLen, [9,20]*/
 
     /* write whole bytes */
     while (remaining >= 8)
     {
+        printf("1--remaining = %d\n", remaining);
         returnValue = BitFilePutChar(bytes[offset], stream);
 
         if (returnValue == EOF)
@@ -999,7 +1002,8 @@ int BitFilePutBitsLE(bit_file_t *stream, void *bits, const unsigned int count)
         remaining -= 8;
         offset++;
     }
-
+    
+    printf("2--remaining = %d\n", remaining);
     if (remaining != 0)
     {
         /* write remaining bits */
@@ -1019,7 +1023,7 @@ int BitFilePutBitsLE(bit_file_t *stream, void *bits, const unsigned int count)
             remaining--;
         }
     }
-
+    printf("offset=%d\n", offset);
     return count;
 }
 

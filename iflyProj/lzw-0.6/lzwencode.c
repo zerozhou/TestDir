@@ -191,7 +191,7 @@ int LZWEncodeFile(char *inFile, char *outFile)
     /* start with 9 bit code words */
     currentCodeLen = 9;
 
-    nextCode = FIRST_CODE;  /* code for next (first) string */
+    nextCode = FIRST_CODE;  /* code for next (first) string 第一个字符的码字，并且FIRST_CODE=2^CHAR_BIT=2^8*/
 
     /* now start the actual encoding process */
 
@@ -220,13 +220,14 @@ int LZWEncodeFile(char *inFile, char *outFile)
         if ((node->prefixCode == code) &&
             (node->suffixChar == c))
         {
-            /* code + c is in the dictionary, make it's code the new code */
+            /* 如果code +c 在字典树中，则将前缀码用字典树中的码字表示，
+             * 如AB的codeWord=265, 则ABA的entry=(265,A)*/
             code = node->codeWord;
         }
         else
         {
-            /* code + c is not in the dictionary, add it if there's room */
-            if (nextCode < MAX_CODES)
+            /* 如果code + c不在字典表中，那么在有空间的情况下，将code+c添加到字典表中 */
+            if (nextCode < MAX_CODES)   /*MAX_CODES = 2^currentCodeLen*/
             {
                 dict_node_t *tmp;
 
@@ -248,8 +249,8 @@ int LZWEncodeFile(char *inFile, char *outFile)
                 fprintf(stderr, "Error: Dictionary Full\n");
             }
 
-            /* are we using enough bits to write out this code word? */
-            while ((code >= (CURRENT_MAX_CODES(currentCodeLen) - 1)) &&
+            /* 如果当前编码长度不够长的情况，需要增加编码长度，即 currentCodeLen + 1 */
+            while ((code >= (CURRENT_MAX_CODES(currentCodeLen) - 1))/*2^currentCodeLen - 1*/ &&
                 (currentCodeLen < MAX_CODE_LEN))
             {
                 /* mark need for bigger code word with all ones */
@@ -258,21 +259,22 @@ int LZWEncodeFile(char *inFile, char *outFile)
                 currentCodeLen++;
             }
 
-            /* write out code for the string before c was added */
+            /* 将字符串的codeWord输出到bitfile中*/
             PutCodeWord(bfpOut, code, currentCodeLen);
 
-            /* new code is just c */
+            /* 获取下一个字符 */
             code = c;
         }
     }
 
-    /* no more input.  write out last of the code. */
+    /* 到达文件末尾，将最后一个字符编码输出 */
     PutCodeWord(bfpOut, code, currentCodeLen);
 
     fclose(fpIn);
     BitFileClose(bfpOut);
 
-    /* free the dictionary */
+    /* 释放字典树*/
+    /*这里的字典树主要是利用字典树能够高校的获取字符的最长前缀码*/
     if (dictRoot != NULL)
     {
         FreeTree(dictRoot);
@@ -439,7 +441,7 @@ dict_node_t *FindDictionaryEntry(dict_node_t *root, int prefixCode,
 
 /***************************************************************************
 *   Function   : PutCodeWord
-*   Description: This function writes a code word from to an encoded file.
+*   Description: This function writes a code word to an encoded file.
 *                In order to deal with endian issue the code word is
 *                written least significant byte followed by the remaining
 *                bits.
