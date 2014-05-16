@@ -1,101 +1,7 @@
-/***************************************************************************
-*                        Bit Stream File Implementation
-*
-*   File    : bitfile.c
-*   Purpose : This file implements a simple library of I/O functions for
-*             files that contain data in sizes that aren't integral bytes.
-*             An attempt was made to make the functions in this library
-*             analogous to functions provided to manipulate byte streams.
-*             The functions contained in this library were created with
-*             compression algorithms in mind, but may be suited to other
-*             applications.
-*   Author  : Michael Dipperstein
-*   Date    : January 9, 2004
-*
-****************************************************************************
-*   UPDATES
-*
-*   $Id: bitfile.c,v 1.13 2008/09/15 04:10:20 michael Exp $
-*   $Log: bitfile.c,v $
-*   Revision 1.13  2008/09/15 04:10:20  michael
-*   Removed dead code.
-*
-*   Revision 1.12  2008/01/25 07:03:49  michael
-*   Added BitFileFlushOutput().
-*
-*   Revision 1.11  2007/12/30 23:55:30  michael
-*   Corrected errors in BitFileOpen and MakeBitFile reported by an anonymous
-*   user.  Segment faults may have occurred if fopen returned a NULL.
-*
-*   Revision 1.10  2007/08/26 21:53:48  michael
-*   Changes required for LGPL v3.
-*
-*   Revision 1.9  2007/07/10 05:34:07  michael
-*   Remove ',' after last element in the enum endian_t.
-*
-*   Revision 1.8  2007/02/06 06:22:07  michael
-*   Used trim program to remove trailing spaces.
-*
-*   Revision 1.7  2006/06/03 19:32:38  michael
-*   Corrected error reporetd anonymous.  The allocation of constants used to
-*   open underlying read/write/append files did not account for a terminating
-*   null.
-*
-*   Used spell checker to correct spelling.
-*
-*   Revision 1.6  2005/12/08 06:56:55  michael
-*   Minor text corrections.
-*
-*   Revision 1.5  2005/12/06 15:06:37  michael
-*   Added BitFileGetBitsInt and BitFilePutBitsInt for integer types.
-*
-*   Revision 1.4  2005/06/23 04:34:18  michael
-*   Prevent BitfileGetBits/PutBits from accessing an extra byte when given
-*   an integral number of bytes.
-*
-*   Revision 1.3  2004/11/09 14:16:58  michael
-*   Added functions to convert open bit_file_t to FILE and to
-*   align open bit_file_t to the next byte.
-*
-*   Revision 1.2  2004/06/15 13:15:58  michael
-*   Use incomplete type to hide definition of bitfile structure
-*
-*   Revision 1.1.1.1  2004/02/09 05:31:42  michael
-*   Initial release
-*
-*
-****************************************************************************
-*
-* Bitfile: Bit stream File I/O Routines
-* Copyright (C) 2004-2007 by Michael Dipperstein (mdipper@cs.ucsb.edu)
-*
-* This file is part of the bit file library.
-*
-* The bit file library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public License as
-* published by the Free Software Foundation; either version 3 of the
-* License, or (at your option) any later version.
-*
-* The bit file library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
-* General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
-***************************************************************************/
-
-/***************************************************************************
-*                             INCLUDED FILES
-***************************************************************************/
 #include <stdlib.h>
 #include <errno.h>
 #include "bitfile.h"
 #include <stdio.h>
-/***************************************************************************
-*                            TYPE DEFINITIONS
-***************************************************************************/
 
 typedef enum
 {
@@ -107,7 +13,7 @@ typedef enum
 struct bit_file_t
 {
     FILE *fp;                   /* file pointer used by stdio functions */
-    endian_t endian;            /* endianess of architecture */
+    endian_t endian;            /* 大端序 or 小端序 */
     unsigned char bitBuffer;    /* bits waiting to be read/written */
     unsigned char bitCount;     /* number of bits in bitBuffer */
     BF_MODES mode;              /* open for read, write, or append */
@@ -120,9 +26,9 @@ typedef union
     unsigned char bytes[sizeof(unsigned long)];
 } endian_test_t;
 
-/***************************************************************************
-*                               PROTOTYPES
-***************************************************************************/
+
+
+
 endian_t DetermineEndianess(void);
 
 int BitFilePutBitsLE(bit_file_t *stream, void *bits, const unsigned int count);

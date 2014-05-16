@@ -1,6 +1,3 @@
-/***************************************************************************
-*                             INCLUDED FILES
-***************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -8,9 +5,6 @@
 #include "lzw.h"
 #include "bitfile.h"
 
-/***************************************************************************
-*                            TYPE DEFINITIONS
-***************************************************************************/
 typedef struct
 {
     unsigned char suffixChar;   /* last char in encoded string */
@@ -18,7 +12,7 @@ typedef struct
 } decode_dictionary_t;
 
 /***************************************************************************
-*                                CONSTANTS
+*                                常量定义
 ***************************************************************************/
 
 #define EMPTY           -1
@@ -41,17 +35,14 @@ typedef struct
 #endif
 
 /***************************************************************************
-*                                  MACROS
+*                                  宏定义
 ***************************************************************************/
 #define CODE_MS_BITS(BITS)      ((BITS) - CHAR_BIT)
 #define MS_BITS_MASK(BITS)      (UCHAR_MAX << (CHAR_BIT - CODE_MS_BITS(BITS)))
 #define CURRENT_MAX_CODES(BITS)     (1 << (BITS))
 
-/***************************************************************************
-*                            GLOBAL VARIABLES
-***************************************************************************/
 
-/* dictionary of string the code word is the dictionary index */
+/* 字典中字符串的码字就是字典的索引index */
 decode_dictionary_t dictionary[DICT_SIZE];
 
 /***************************************************************************
@@ -62,9 +53,6 @@ unsigned char DecodeRecursive(unsigned int code, FILE *fpOut);
 /* read encoded data */
 int GetCodeWord(bit_file_t *bfpIn, unsigned char codeLen);
 
-/***************************************************************************
-*                                FUNCTIONS
-***************************************************************************/
 
 /***************************************************************************
 *   Function   : LZWDecodeFile
@@ -100,7 +88,7 @@ int LZWDecodeFile(const char *inFile, const char *outFile)
     }
     else
     {
-        if (NULL == (fpOut = fopen(outFile, "wb")))
+        if (NULL == (fpOut = fopen(outFile, "w+b")))/*wb*/
         {
             BitFileClose(bfpIn);
             perror(outFile);

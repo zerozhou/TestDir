@@ -1,6 +1,3 @@
-############################################################################
-# Makefile for lzw encode/decode library and sample program
-############################################################################
 CC = gcc
 LD = gcc
 CFLAGS = -O3 -Wall -pedantic -ansi -c
@@ -41,4 +38,4 @@ bitfile.o:	bitfile.c bitfile.h
 clean:
 		$(DEL) *.o
 		$(DEL) *.a
-		$(DEL) compress
+#		$(DEL) compress

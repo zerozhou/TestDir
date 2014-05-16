@@ -14,7 +14,8 @@
 int main(int argc, char *argv[])
 {
 
-    char ResultString[MAX_LEN];
+    char ResultString[MAX_LEN]; 
+    /*const  char singerName[20];*/
     int rsflag;
 
 
@@ -23,16 +24,24 @@ int main(int argc, char *argv[])
         fputs ("参数不正确",stderr);
         exit(EXIT_FAILURE);
     }
-    Initialize(argv[1]);
-    printf("%s---", argv[2]);
-    rsflag = ProcessSelect(argv[2], ResultString);
-    if( rsflag > 0 )
+
+    rsflag = Initialize(argv[1]);
+    if (0 == rsflag)
     {
-        printf("检索结果：\t %s", ResultString);
+        printf("资源加载失败！");
+        exit (EXIT_FAILURE);
+    }
+    rsflag = ProcessSelect(argv[2], ResultString);
+
+    if( rsflag < 0 )
+    {
+        printf("检索失败！\n");
+        exit(EXIT_FAILURE);
     }
     else
     {
-        printf("检索失败！\n");
+        printf("检索结果：\t %s\n", ResultString);
+        exit (EXIT_SUCCESS);
+        
     }
-    exit (EXIT_SUCCESS);
 }
