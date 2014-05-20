@@ -1,0 +1,58 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CC	/home/zjzhou/Documents/Github/TestDir/Hash-Table/Makefile	/^CC = gcc -fPIC $/;"	m
+CFLAGS	/home/zjzhou/Documents/Github/TestDir/Hash-Table/Makefile	/^CFLAGS = -Wall -O2$/;"	m
+CFLAGS	/home/zjzhou/Documents/Github/TestDir/Hash-Table/Makefile	/^CFLAGS = -Wall -Wextra -ggdb -pg -DDEBUG$/;"	m
+HASH	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	8;"	d
+HASH_LEN	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	7;"	d
+HT_ADD	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	137;"	d
+HT_HAS_KEY	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	198;"	d
+HT_LOOKUP	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	178;"	d
+HT_REMOVE	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	159;"	d
+INFO	/home/zjzhou/Documents/Github/TestDir/Hash-Table/debug.h	14;"	d
+INFO	/home/zjzhou/Documents/Github/TestDir/Hash-Table/debug.h	8;"	d
+LDFLAGS	/home/zjzhou/Documents/Github/TestDir/Hash-Table/Makefile	/^LDFLAGS = -lm$/;"	m
+LOG	/home/zjzhou/Documents/Github/TestDir/Hash-Table/debug.h	13;"	d
+LOG	/home/zjzhou/Documents/Github/TestDir/Hash-Table/debug.h	9;"	d
+MODE_ALLREF	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    MODE_ALLREF$/;"	e	enum:hash_table_mode
+MODE_COPY	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    MODE_COPY,$/;"	e	enum:hash_table_mode
+MODE_VALUEREF	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    MODE_VALUEREF,$/;"	e	enum:hash_table_mode
+OBJS	/home/zjzhou/Documents/Github/TestDir/Hash-Table/Makefile	/^OBJS = main.o hashtable.o$/;"	m
+_DEBUG_H	/home/zjzhou/Documents/Github/TestDir/Hash-Table/debug.h	2;"	d
+_HASHTABLE_H	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	2;"	d
+hash_table	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^typedef struct hash_table$/;"	s
+hash_table_add	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^int hash_table_add(hash_table_t * table, void * key, size_t key_len, void * value, size_t value_len)$/;"	f
+hash_table_delete	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^void hash_table_delete(hash_table_t * table)$/;"	f
+hash_table_do_hash	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^uint16_t hash_table_do_hash(void * key, size_t key_len, uint16_t max_key)$/;"	f
+hash_table_element	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^struct hash_table_element$/;"	s
+hash_table_element_delete	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^void hash_table_element_delete(hash_table_t * table, hash_table_element_t * element)$/;"	f
+hash_table_element_new	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^hash_table_element_t * hash_table_element_new()$/;"	f
+hash_table_element_s	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	40;"	d
+hash_table_element_t	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^typedef struct hash_table_element hash_table_element_t;$/;"	t	typeref:struct:hash_table_element
+hash_table_get_elements	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^size_t hash_table_get_elements(hash_table_t * table, hash_table_element_t *** elements)$/;"	f
+hash_table_get_keys	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^size_t hash_table_get_keys(hash_table_t * table, void ** keys)$/;"	f
+hash_table_has_key	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^int hash_table_has_key(hash_table_t * table, void * key, size_t key_len)$/;"	f
+hash_table_iterate	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^int hash_table_iterate(hash_table_t *table, int (*fct)(void *user,$/;"	f
+hash_table_lookup	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^void * hash_table_lookup(hash_table_t * table, void * key, size_t key_len)$/;"	f
+hash_table_mode	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^typedef enum hash_table_mode{$/;"	g
+hash_table_mode_t	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^} hash_table_mode_t;$/;"	t	typeref:enum:hash_table_mode
+hash_table_new	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^hash_table_t * hash_table_new(hash_table_mode_t mode)$/;"	f
+hash_table_remove	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^int hash_table_remove(hash_table_t * table, void * key, size_t key_len)$/;"	f
+hash_table_resize	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.c	/^int hash_table_resize(hash_table_t *table, size_t len)$/;"	f
+hash_table_s	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	86;"	d
+hash_table_t	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^} hash_table_t;$/;"	t	typeref:struct:hash_table
+key	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    void * key;$/;"	m	struct:hash_table_element
+key_count	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    size_t key_count;$/;"	m	struct:hash_table
+key_len	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    size_t key_len;$/;"	m	struct:hash_table_element
+key_num	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    uint16_t key_num;$/;"	m	struct:hash_table
+key_ratio	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    size_t key_ratio;$/;"	m	struct:hash_table
+main	/home/zjzhou/Documents/Github/TestDir/Hash-Table/main.c	/^int main()$/;"	f
+mode	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    hash_table_mode_t mode;$/;"	m	struct:hash_table
+next	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    hash_table_element_t * next;$/;"	m	struct:hash_table_element
+store_house	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    hash_table_element_t  ** store_house;$/;"	m	struct:hash_table
+value	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    void * value;$/;"	m	struct:hash_table_element
+value_len	/home/zjzhou/Documents/Github/TestDir/Hash-Table/hashtable.h	/^    size_t value_len;$/;"	m	struct:hash_table_element
