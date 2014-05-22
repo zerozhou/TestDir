@@ -11,7 +11,7 @@ main.o: main.c hashtable.h
 	$(CC) $(CFLAGS) $<
 
 hashtable.o: hashtable.c debug.h
-	$(CC) $(CFLAGS) $<
+	$(CC) -L . $(CFLAGS) $<
 clean:
 	$(RM) *.o  hash
 

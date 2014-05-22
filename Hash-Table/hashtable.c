@@ -1,21 +1,12 @@
-/**
- * License GPLv3+
- * @file hashtable.c
- * @brief a simple hash table implementation
- * @author Ankur Shrivastava
- */
 #include "hashtable.h"
 #include "debug.h"
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>  /*this is a test*/
 
-// element operations
-/**
- * Function to create a now hash_table element
- * @returns hash_table_element_t object when success
- * @returns NULL when no memory
- */
+/*1-----元素操作-------------*/
+/*申请一个哈希元素的内存空间*/
 hash_table_element_t * hash_table_element_new()
 {
     INFO("creating a new hash table element");
@@ -23,14 +14,14 @@ hash_table_element_t * hash_table_element_new()
 }
 
 /**
- * Function to delete an hash table element
+ * 删除哈希表中的元素
  * @param table table from which element has to be deleted
  * @param element hash table element to be deleted
  */
 void hash_table_element_delete(hash_table_t * table, hash_table_element_t * element)
 {
     INFO("Deleting an hash table element");
-    if (table->mode == MODE_COPY)
+    if (table->mode == MODE_COPY)  /*MODE_COPY = 0, MODE_VALUEREF = 1, MODE_ALLREF = 2*/
     {
         free(element->value);
         free(element->key);
@@ -42,11 +33,11 @@ void hash_table_element_delete(hash_table_t * table, hash_table_element_t * elem
     free(element);
 }
 
-// hash table operations
+/*2 ----- 哈希表进行操作-----------------*/
 /**
- * Fuction to create a new hash table
- * @param mode hash_table_mode which the hash table should follow
- * @returns hash_table_t object which references the hash table
+ * Fuction 创建一个新的hash table
+ * @param mode      hash_table_mode which the hash table should follow
+ * @returns hash_table_t    object which references the hash table
  * @returns NULL when no memory
  */
 hash_table_t * hash_table_new(hash_table_mode_t mode)
@@ -61,6 +52,7 @@ hash_table_t * hash_table_new(hash_table_mode_t mode)
     table->mode = mode;
     table->key_num = 128;
     table->key_ratio = 4;
+    //table->store_house = (hash_table_element_t **) calloc(table->key_num, sizeof(int));  /*这里只需要申请能够存放指针数组的空间即可，由于是32位机器，所以一个地址占用4个字节*/
     table->store_house = (hash_table_element_t **) calloc(table->key_num, sizeof(hash_table_element_t *));
     if (!table->store_house)
     {
@@ -72,8 +64,8 @@ hash_table_t * hash_table_new(hash_table_mode_t mode)
 }
 
 /**
- * Function to delete the hash table
- * @param table hash table to be deleted
+ * Function 删除哈希表，注意这里的hash_table 和 hash_table_element_t是单独创建的，
+ * 所以删除的时候需要遍历hash_table，将hash_table_element_t逐个删除，最后在删除hash_table
  */
 void hash_table_delete(hash_table_t * table)
 {
@@ -104,13 +96,16 @@ void hash_table_delete(hash_table_t * table)
  */
 int hash_table_add(hash_table_t * table, void * key, size_t key_len, void * value, size_t value_len)
 {
-    if ((table->key_count / table->key_num) >= table->key_ratio)
+    
+    if ((table->key_count / table->key_num) >= table->key_ratio)/*与设定的载荷因子进行比较，超过载荷因子，需要将has_table变大*/
     {
         LOG("Ratio(%d) reached the set limit %d\nExpanding hash_table", (table->key_count / table->key_num), table->key_ratio);
         hash_table_resize(table, table->key_num*2);
         //exit(0);
     }
-    size_t hash = HASH(key, key_len);
+    /*size_t hash = HASH(key, key_len);*/
+    uint32_t hash = HASH(key, key_len);
+    printf("hash = %u\n",hash);
     hash_table_element_t * element = hash_table_element_new();
     if (!element)
     {
@@ -124,7 +119,7 @@ int hash_table_add(hash_table_t * table, void * key, size_t key_len, void * valu
         element->value = malloc(value_len);
         if (element->key && element->value)
         {
-            memcpy(element->key, key, key_len);
+            memcpy(element->key, key, key_len);    /*从源key所指的内存地址的起始位置开始，复制key_len的字节到内存element->key*/
             memcpy(element->value, value, value_len);
         }
         else
@@ -168,28 +163,31 @@ int hash_table_add(hash_table_t * table, void * key, size_t key_len, void * valu
     element->key_len = key_len;
     element->value_len = value_len;
     element->next = NULL;
-    // find the key position for chaining
-    if (!table->store_house[hash])
+    /*使用hash值作为store_house的index，找到插入位置*/
+    if (!table->store_house[hash])  /*插入位置是空值，说明可以插入*/
     {
         LOG("No Conflicts adding the first element at %d", (int)hash);
         table->store_house[hash] = element;
         table->key_count++;
+
     }
     else
     {
-        LOG("Conflicts adding element at %d", (int)hash);
+        LOG("Conflicts adding element at %d", (int)hash);  
+        /*插入位置非空，说明该位置已经有数据，即遇到hash值相同的情况，使用链表进行冲突处理*/
         hash_table_element_t * temp = table->store_house[hash];
-        while(temp->next)
+        while(temp->next)/*如果相同的hash值位置不仅仅有一个元素，则temp->next！= NULL*/
         {
             while(temp->next && temp->next->key_len!=key_len)
             {
                 temp = temp->next;
             }
-            if(temp->next)
+            if(temp->next)/*相同的hash值，有两种情况:key 相同，key不同*/
             {
-                if (!memcmp(temp->next->key, key, key_len))
+                if (!memcmp(temp->next->key, key, key_len))  /*key相同*/
                 {
-                    LOG("Found Key at hash -> %d", (int)hash);
+                    //LOG("Found Key at hash -> %d\n", (int)hash);
+                    printf("Found Key at hash -> %u\n", (unsigned int)hash);
                     hash_table_element_t *to_delete = temp->next;
                     temp->next = element;
                     element->next = to_delete->next;
@@ -197,12 +195,13 @@ int hash_table_add(hash_table_t * table, void * key, size_t key_len, void * valu
                     // since we are replacing values no need to change key_count
                     return 0;
                 }
-                else
+                else/*key不同，直接将元素挂在末尾m*/
                 {
                     temp = temp->next;
                 }
             }
         }
+        /*如果相同的hash值位置仅仅只有一个元素，即temp->next == NULL*/
         temp->next = element;
         table->key_count++;
     }
@@ -210,7 +209,7 @@ int hash_table_add(hash_table_t * table, void * key, size_t key_len, void * valu
 }
 
 /**
- * Function to remove an hash table element (for a given key) from a given hash table
+ * 函数功能是从hash_table中移除给定的元素
  * @param table hash table from which element has to be removed
  * @param key pointer to the key which has to be removed
  * @param key_len size of the key in bytes
@@ -226,7 +225,8 @@ int hash_table_remove(hash_table_t * table, void * key, size_t key_len)
         hash_table_resize(table, table->key_num/2);
         //exit(0);
     }
-    size_t hash = HASH(key, key_len);
+    /*size_t hash = HASH(key, key_len);*/
+    uint32_t hash = HASH(key, key_len);
     if (!table->store_house[hash])
     {
         LOG("Key Not Found -> No element at %d", (int)hash);
@@ -267,7 +267,7 @@ int hash_table_remove(hash_table_t * table, void * key, size_t key_len)
 }
 
 /**
- * Function to lookup a key in a particular table
+ * 函数功能是在hash_table中查找给定的key
  * @param table table to look key in
  * @param key pointer to key to be looked for
  * @param key_len size of the key to be searched
@@ -276,7 +276,7 @@ int hash_table_remove(hash_table_t * table, void * key, size_t key_len)
  */
 void * hash_table_lookup(hash_table_t * table, void * key, size_t key_len)
 {
-    size_t hash = HASH(key, key_len);
+    uint32_t hash = HASH(key, key_len);
     LOG("Looking up a key-value pair for hash -> %d", (int)hash);
     if (!table->store_house[hash])
     {
@@ -295,6 +295,7 @@ void * hash_table_lookup(hash_table_t * table, void * key, size_t key_len)
             if (!memcmp(temp->key, key, key_len))
             {
                 LOG("Found Key at hash -> %d", (int)hash);
+                /*printf("temp->value = %d", *(int *)temp->value);  *this is a test*/
                 return temp->value;
             }
             else
@@ -308,7 +309,7 @@ void * hash_table_lookup(hash_table_t * table, void * key, size_t key_len)
 }
 
 /**
- * Function to look if the exists in the hash table
+ * 函数功能是判断一个key在hash_table中是否存在
  * @param key pointer to key to be looked for
  * @param key_len size of the key to be searched
  * @returns 0 when key is not found
@@ -316,7 +317,8 @@ void * hash_table_lookup(hash_table_t * table, void * key, size_t key_len)
  */
 int hash_table_has_key(hash_table_t * table, void * key, size_t key_len)
 {
-    size_t hash = HASH(key, key_len);
+    /*size_t hash = HASH(key, key_len);*/
+    uint32_t hash = HASH(key, key_len);
     LOG("Searching for key with hash -> %d", (int)hash);
     if (!table->store_house[hash])
     {
@@ -345,7 +347,7 @@ int hash_table_has_key(hash_table_t * table, void * key, size_t key_len)
 }
 
 /**
- * Function to return all the keys in a given hash table
+ * 函数功能是返回hash_table中的所有keys
  * @param table hash table from which key are to be reterived
  * @param keys a void** pointer where keys are filled in (memory allocated internally and must be freed)
  * @return total number of keys filled in keys 
@@ -381,7 +383,7 @@ size_t hash_table_get_keys(hash_table_t * table, void ** keys)
 }
 
 /**
- * Function to get all elements (key - value pairs) from the given hash table
+ * 函数功能是从hash_table中返回所有元素（key, value）
  * @param table hash table from which elements have to be retrieved
  * @param elements a pointer to an array of hash_table_element_t pointer (malloced by function)
  * @returns 1 when no memory 
@@ -423,12 +425,26 @@ size_t hash_table_get_elements(hash_table_t * table, hash_table_element_t *** el
 }
 
 /**
- * Function that returns a hash value for a given key and key_len
+ * 函数功能: 这是一个hash函数，给定一个key，返回它的hash值
  * @param key pointer to the key
  * @param key_len length of the key
  * @param max_key max value of the hash to be returned by the function 
  * @returns hash value belonging to [0, max_key)
  */
+uint32_t hash_table_do_hash(void * key, size_t key_len, uint16_t max_key)
+{
+    unsigned char *str = (unsigned char *) key;     /*uint8_t : unsigned char*/
+    size_t seed = 131; /*  31   131   1313   131313  */
+    uint32_t hash = 0;                   /*uint32_t : 4 bytes   == unsigned int*/
+    size_t  i = 0;
+    for ( i = 0; i < key_len; key++, ++i)
+    {
+        hash = (hash*seed) + (*str);
+    }
+    hash = hash % max_key;
+    return hash;
+}
+/*
 uint16_t hash_table_do_hash(void * key, size_t key_len, uint16_t max_key)
 {
     uint16_t *ptr = (uint16_t *) key;
@@ -442,9 +458,9 @@ uint16_t hash_table_do_hash(void * key, size_t key_len, uint16_t max_key)
     hash = hash % max_key;
     return hash;
 }
-
+*/
 /**
- * Function to resize the hash table store house
+ * 函数功能：调整hash_table的大小
  * @param table hash table to be resized
  * @param len new length of the hash table
  * @returns -1 when no elements in hash table

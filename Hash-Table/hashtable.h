@@ -4,214 +4,110 @@
 #include<sys/types.h>
 #include<stdint.h>
 
-#define HASH_LEN table->key_num
-#define HASH(x,y) hash_table_do_hash(x,y,HASH_LEN)
+/*********************************************************************************************************************************************
+ *                                                      宏定义
+ *
+ * ******************************************************************************************************************************************/
+#define HASH_LEN    table->key_num
+#define HASH(x,y)   hash_table_do_hash(x,y,HASH_LEN)
+#define hash_table_element_s   sizeof(hash_table_element_t) 
+#define hash_table_s     sizeof(hash_table_t)
+#define HT_REMOVE(table, key)   hash_table_remove(table, key, sizeof(*key))
+#define HT_ADD(table, key, value)   hash_table_add(table, (void *) key, sizeof(*key), (void *) value, sizeof(*value))
+#define HT_LOOKUP(table, key)    hash_table_lookup(table, key, sizeof(*key))
+#define HT_HAS_KEY(table, key)   hash_table_has_key(table, key, sizeof(*key))
 
-// forward declaration
-typedef struct hash_table_element hash_table_element_t;
+/*********************************************************************************************************************************************
+ *                                                          枚举类型
+ * ******************************************************************************************************************************************/
 
-/**
- * @struct hash_table_element "hashtable.h"
- * @brief stores an hash table element for use in the hash table
- */
-struct hash_table_element
-{
-    /**
-     * store the length in bytes of the key
-     */
-    size_t key_len;
-    /**
-     * stores the length in bytes of the key (only for copy mode)
-     */
-    size_t value_len;
-    /**
-     * pointer to the key 
-     */
-    void * key;
-    /**
-     * pointer to the value
-     */
-    void * value;
-    /**
-     * next chained key for this hash
-     */
-    hash_table_element_t * next;
-};
-#define hash_table_element_s sizeof(hash_table_element_t)
-
-/**
- * @enum hash_table_mode defines the mode of operation of hash table
- */
 typedef enum hash_table_mode{
-    /** copy mode here values as well as key is copied */
-    MODE_COPY,
-    /** value reference mode, here ONLY key is copies and value is always referred */
-    MODE_VALUEREF,
-    /** in this mode all keys and values are referred */
-    MODE_ALLREF
+    MODE_COPY,  /*MODE_COPY = 0, 复制模式，{ key,value }均可复制*/
+    MODE_VALUEREF, /*MODE_VALUEREF = 0, value 不可复制,可以被refer，key可以被复制*/
+    MODE_ALLREF    /*MODE_ALLREF = 0, value 和 key 均不可以被复制，只可以被refer*/
 } hash_table_mode_t;
 
-/**
- * @struct hash_table "hashtable.h"
- * @brief identifies the hashtable for which operations are to be performed
- */
-typedef struct hash_table
+/*********************************************************************************************************************************************
+ *                                                          数据结构
+ * ******************************************************************************************************************************************/
+
+struct hash_table_element
 {
-    /**
-     * the hash table array where all values are stored
-     */
-    hash_table_element_t  ** store_house;
+    size_t key_len;  /*key 长度*/
+    size_t value_len; /*value 长度*/
+    void * key;      /*指向key的指针*/
+    void * value;   /*指向value的指针*/
+    struct hash_table_element *next;  /*遇到hash冲突，使用链表解决*/
+};
 
-    /**
-     * mode of the hash table
-     */
-    hash_table_mode_t mode;
+typedef struct hash_table_element hash_table_element_t;
 
-    /**
-     * number of keys in the hash table
-     */
-    size_t key_count;
+struct hash_table
+{
+    hash_table_element_t  ** store_house;  /*存储所有key,value 实体*/
+    hash_table_mode_t mode;  /*hash_table_t 的模型*/
 
-    /**
-     * number of keys allocated in the hash table
-     */
-    uint16_t key_num;
+    size_t key_count; /*hash table 中现有的key 个数*/
+    uint16_t key_num;  /*hash table 能够存储的key总数*/
+    size_t key_ratio;/*载荷因子，key_count / key_num */
+};
 
-    /**
-     * the ratio of key_count / key_num at which the hash table should be expanded
-     */
-    size_t key_ratio;
-
-} hash_table_t;
-#define hash_table_s sizeof(hash_table_t)
+typedef struct hash_table hash_table_t;
 
 
-// element operations
-/**
- * Function to create a now hash_table element
- * @returns hash_table_element_t object when success
- * @returns NULL when no memory
- */
-hash_table_element_t * hash_table_element_new();
+/*********************************************************************************************************************************************
+ *                                                          函数声明
+ *                                                      （1）元素操作
+ *                                                      （2）哈希表操作
+ * ******************************************************************************************************************************************/
 
-/**
- * Function to delete an hash table element
- * @param table table from which element has to be deleted
- * @param element hash table element to be deleted
- */
+/*创建一个新元素*/
+hash_table_element_t * hash_table_element_new(); 
+
+/*删除hash table 中的元素*/
 void hash_table_element_delete(hash_table_t *, hash_table_element_t *);
 
-/**
- * Function that returns a hash value for a given key and key_len
- * @param key pointer to the key
- * @param key_len length of the key
- * @param max_key max value of the hash to be returned by the function 
- * @returns hash value belonging to [0, max_key)
- */
-uint16_t hash_table_do_hash(void * key, size_t key_len, uint16_t max_key);
+/*hash 函数的定义：给定一个key, 返回一个hash值*/
+uint32_t hash_table_do_hash(void * key, size_t key_len, uint16_t max_key);
 
-// hash table operations
-/**
- * Fuction to create a new hash table
- * @param mode hash_table_mode which the hash table should follow
- * @returns hash_table_t object which references the hash table
- * @returns NULL when no memory
+/*
+ *++++++++++++++hash table的操作++++++++++++++
  */
+
+/*创建一个新的hash table*/
 hash_table_t * hash_table_new(hash_table_mode_t);
 
-/**
- * Function to delete the hash table
- * @param table hash table to be deleted
- */
+/*删除hash table*/
 void hash_table_delete(hash_table_t *);
 
-/**
- * macro to add a key - value pair to the hash table
- * @note use this macro when size of key and/or value can be given by sizeof
- * @param table hash table to add element to
- * @param key pointer to the key for the hash table
- * @param value pointer to the value to be added against the key
- * @returns 0 on sucess
- * @returns -1 when no memory
- */
-#define HT_ADD(table, key, value) hash_table_add(table, (void *) key, sizeof(*key), (void *) value, sizeof(*value))
-
-/**
- * Function to add a key - value pair to the hash table, use HT_ADD macro
- * @param table hash table to add element to
- * @param key pointer to the key for the hash table
- * @param key_len length of the key in bytes
- * @param value pointer to the value to be added against the key
- * @param value_len length of the value in bytes
- * @returns 0 on sucess
- * @returns -1 when no memory
- */
+/*向hash table 中添加一个（key, value）
+ * 添加成功，返回0，添加失败，返回-1
+ * */
 int hash_table_add(hash_table_t *, void *, size_t, void *, size_t);
 
 /**
- * macro to remove an hash table element (for a given key) from a given hash table
- * @note use this macro when size of key and/or value can be given by sizeof
- * @param table hash table from which element has to be removed
- * @param key pointer to the key which has to be removed
- * @returns 0 on sucess
- * @returns -1 when key is not found
- */
-#define HT_REMOVE(table, key) hash_table_remove(table, key, sizeof(*key))
-
-/**
- * Function to remove an hash table element (for a given key) from a given hash table
- * @param table hash table from which element has to be removed
- * @param key pointer to the key which has to be removed
- * @param key_len size of the key in bytes
- * @returns 0 on sucess
- * @returns -1 when key is not found
+ *从hash table 中移除/删除一个key，value 
+ *删除成功返回0, 失败返回-1
  */
 int hash_table_remove(hash_table_t *, void *, size_t);
 
-/**
- * macro to lookup a key in a particular table
- * @param table table to look key in
- * @param key pointer to key to be looked for
- * @returns NULL when key is not found in the hash table
- * @returns void* pointer to the value in the table
- */
-#define HT_LOOKUP(table, key) hash_table_lookup(table, key, sizeof(*key))
+/*
+ *在hash table中查找key
+ *成功操作，返回一个void* 指针，指向key对应的value
+ *失败，则返回NULL
+ * */
 
-/**
- * Function to lookup a key in a particular table
- * @note use this macro when size of key and/or value can be given by sizeof
- * @param table table to look key in
- * @param key pointer to key to be looked for
- * @param key_len size of the key to be searched
- * @returns NULL when key is not found in the hash table
- * @returns void* pointer to the value in the table
- */
 void * hash_table_lookup(hash_table_t *, void *, size_t);
-
-/**
- * macro to look if the exists in the hash table
- * @note use this macro when size of key and/or value can be given by sizeof
- * @param key pointer to key to be looked for
- * @returns 0 when key is not found
- * @returns 1 when key is found
- */
-#define HT_HAS_KEY(table, key) hash_table_has_key(table, key, sizeof(*key))
-
-/**
- * Function to look if the exists in the hash table
- * @param key pointer to key to be looked for
- * @param key_len size of the key to be searched
- * @returns 0 when key is not found
- * @returns 1 when key is found
+/*
+ *判断key 是否在hash table中
+ *成功操作，返回1,
+ *失败，则返回0
  */
 int hash_table_has_key(hash_table_t *, void *, size_t);
 
-/**
- * Function to return all the keys in a given hash table
- * @param table hash table from which key are to be reterived
- * @param keys a void** pointer where keys are filled in (memory allocated internally and must be freed)
- * @return total number of keys filled in keys 
- */
+
+
+/*返回hash table中所有的keys个数*/
 size_t hash_table_get_keys(hash_table_t *, void **);
 
 /**
